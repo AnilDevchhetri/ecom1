@@ -33,4 +33,4 @@ const App = () => {
 
 export default App
 
-//60
+//1:10
