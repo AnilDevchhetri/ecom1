@@ -10,6 +10,7 @@ const Collection = () => {
     const [filterProducts, setFilterProducts] = useState([])
     const [category, setCategory] = useState([]);
     const [subCategory, setSubCategory] = useState([]);
+    const [sortTpye, setSortType] = useState('relavent');
 
     const toggleCategory = (e) => {
         if (category.includes(e.target.value)) {
@@ -43,10 +44,24 @@ const Collection = () => {
     }
 
     const sortProduct = () => {
-        let filterProductsCopy = filterProducts.slice();
-        // switch(sortTpye)
+        let fpCopy = filterProducts.slice();
+        switch (sortTpye) {
+            case 'low-high':
+                setFilterProducts(fpCopy.sort((a, b) => (a.price - b.price)));
+                break;
+            case 'high-low':
+                setFilterProducts(fpCopy.sort((a, b) => (b.price - a.price)))
+                break;
+            default:
+                applyFilter();
+                break
+
+        }
     }
 
+    useEffect(() => {
+        sortProduct()
+    }, [sortTpye])
     useEffect(() => {
         applyFilter();
     }, [category, subCategory])
@@ -60,17 +75,17 @@ const Collection = () => {
                 </p>
                 {/* category filters */}
                 <div className={`border border-gray-300 pl-5 py-3 mt-6 ${showFilter ? '' : 'hidden'} sm:block`}>
-                    <p className='mb-3 text-sm font-medium'>CATEGORIES</p>
+                    <p className='mb-3 text-sm font-medium'>CATEGORIES Nikki san</p>
                     <div className='flex flex-col gap-2 text-sm  font-light text-gray-700'>
-                        <p className='flex gap-2'>
+                        <label className='flex gap-2'>
                             <input type="checkbox" className=' w-3' value={'Men'} onChange={toggleCategory} />Men
-                        </p>
-                        <p className='flex gap-2'>
+                        </label>
+                        <label className='flex gap-2'>
                             <input type="checkbox" className=' w-3' value={'Women'} onChange={toggleCategory} />Women
-                        </p>
-                        <p className='flex gap-2'>
+                        </label>
+                        <label className='flex gap-2'>
                             <input type="checkbox" className=' w-3' value={'Kids'} onChange={toggleCategory} />Kids
-                        </p>
+                        </label>
                     </div>
                 </div>
 
@@ -81,12 +96,13 @@ const Collection = () => {
                         <p className='flex gap-2'>
                             <input type="checkbox" className=' w-3' value={'Topwear'} onClick={toggleSubCategory} />Topwear
                         </p>
-                        <p className='flex gap-2'>
+                        <label className='flex gap-2'>
                             <input type="checkbox" className=' w-3' value={'Bottomwear'} onClick={toggleSubCategory} />Bottomwear
-                        </p>
-                        <p className='flex gap-2'>
+                        </label>
+                        <label className='flex gap-2'>
+
                             <input type="checkbox" className=' w-3' value={'Winterwear'} onClick={toggleSubCategory} />Winterwear
-                        </p>
+                        </label>
                     </div>
                 </div>
             </div>
@@ -96,7 +112,7 @@ const Collection = () => {
                 <div className="flex justify-between text-base sm:text-2xl mb-4">
                     <Title text1={'ALL '} text2={' COLLECTIONS'} />
                     {/* PRODCT SORTING */}
-                    <select className='border border-gray-300 text-sm px-2'>
+                    <select onChange={(e) => setSortType(e.target.value)} className='border border-gray-300 text-sm px-2'>
                         <option value="relavent">Sort By: Relavent</option>
                         <option value="low-high">Sort By: low to high</option>
                         <option value="high-low">Sort By: high to low</option>
